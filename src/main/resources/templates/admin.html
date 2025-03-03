@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Админка - Управление номерами</title>
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+<header>
+  <div class="logo">HotBooking - Админ</div>
+  <a href="/">На главную</a>
+</header>
+
+<section class="admin-panel">
+  <h2>Управление номерами</h2>
+
+  <div class="form-group">
+    <label for="citySelect">Город:</label>
+    <select id="citySelect">
+      <option value="">Выберите город</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="hotelSelect">Отель:</label>
+    <select id="hotelSelect" disabled>
+      <option value="">Сначала выберите город</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <p>Доступные номера: <span id="availableRooms">-</span></p>
+    <button id="decreaseRooms">-1</button>
+    <button id="increaseRooms">+1</button>
+  </div>
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const citySelect = document.getElementById("citySelect");
+    const hotelSelect = document.getElementById("hotelSelect");
+    const availableRooms = document.getElementById("availableRooms");
+    const increaseRooms = document.getElementById("increaseRooms");
+    const decreaseRooms = document.getElementById("decreaseRooms");
+
+    // Загружаем список городов
+    fetch("/api/cities")
+            .then(response => response.json())
+            .then(data => {
+              data.forEach(city => {
+                const option = document.createElement("option");
+                option.value = city.cityId;
+                option.textContent = city.cityName;
+                citySelect.appendChild(option);
+              });
+
+              citySelect.addEventListener("change", function () {
+                const selectedCityId = this.value;
+                hotelSelect.innerHTML = `<option value="">Выберите отель</option>`;
+
+                if (selectedCityId) {
+                  hotelSelect.disabled = false;
+                  fetch(`/api/hotels/by-city/${selectedCityId}`)
+                          .then(response => response.json())
+                          .then(hotels => {
+                            hotels.forEach(hotel => {
+                              const option = document.createElement("option");
+                              option.value = hotel.hotelId;
+                              option.textContent = `${hotel.hotelName} (${hotel.availableRooms} номеров)`;
+                              hotelSelect.appendChild(option);
+                            });
+                          });
+                } else {
+                  hotelSelect.disabled = true;
+                }
+              });
+
+              hotelSelect.addEventListener("change", function () {
+                const selectedHotel = this.options[this.selectedIndex].text;
+                availableRooms.textContent = selectedHotel.match(/\d+/)[0]; // Вытаскиваем число номеров
+              });
+            })
+            .catch(error => console.error("Ошибка загрузки городов:", error));
+
+    function updateRooms(change) {
+      const hotelId = hotelSelect.value;
+      if (!hotelId) return;
+
+      fetch(`/api/hotels/${hotelId}/update-rooms?change=${change}`, { method: "POST" })
+              .then(response => response.json())
+              .then(data => {
+                availableRooms.textContent = data.availableRooms;
+                hotelSelect.options[hotelSelect.selectedIndex].text = `${data.hotelName} (${data.availableRooms} номеров)`;
+              })
+              .catch(error => console.error("Ошибка обновления номеров:", error));
+    }
+
+    increaseRooms.addEventListener("click", () => updateRooms(1));
+    decreaseRooms.addEventListener("click", () => updateRooms(-1));
+  });
+</script>
+
+</body>
+</html>

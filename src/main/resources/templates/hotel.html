@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${hotel.hotelName}">Название отеля</title>
+    <link rel="stylesheet"  href="/css/styles.css">
+</head>
+<body>
+<header>
+    <div class="logo">HotBooking</div>
+    <nav>
+        <a href="/">Главная</a>
+        <a href="/about">О нас</a>
+        <a href="/contact">Контакты</a>
+        <a href="/account">Вход</a>
+    </nav>
+</header>
+
+<section class="hotel-details">
+    <h1 th:text="${hotel.hotelName}">Название отеля</h1>
+    <p th:text="${hotel.description}">Описание отеля</p>
+    <p>Доступные номера: <span th:text="${hotel.availableRooms}">0</span></p>
+    <img th:src="@{${hotel.photo}}" alt="Фото отеля">
+</section>
+</body>
+</html>

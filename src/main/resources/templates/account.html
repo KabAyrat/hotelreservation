@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет</title>
+    <link rel="stylesheet" href="./css/account.css">
+</head>
+<body>
+<header>
+    <div class="logo">HotBooking</div>
+    <div class="burger-menu" onclick="toggleMenu()">☰</div>
+    <nav id="nav-menu">
+        <a href="/">Главная</a>
+        <a href="/about">О нас</a>
+        <a href="/contact">Контакты</a>
+        <a href="/account">Вход</a>
+    </nav>
+</header>
+
+<section class="account">
+    <div class="account-container">
+        <h2>Личный кабинет</h2>
+        <p>Добро пожаловать, <span class="user-name">Иван Иванов</span>!</p>
+
+        <h3>Ваши бронирования</h3>
+        <div class="bookings">
+            <div class="booking">
+                <img src="/images/hotelKazan.jpg" alt="Отель">
+                <div class="booking-info">
+                    <h4>Отель "Ривьера"</h4>
+                    <p>Город: Казань</p>
+                    <p>Номер: Люкс</p>
+                    <p>Дата заезда: 15 марта 2025</p>
+                    <p>Дата выезда: 20 марта 2025</p>
+                    <button class="cancel-btn">Отменить бронирование</button>
+                </div>
+            </div>
+
+            <div class="booking">
+                <img src="/images/moscowHotel.jpg" alt="Отель">
+                <div class="booking-info">
+                    <h4>Отель "Атлантик"</h4>
+                    <p>Город: Москва</p>
+                    <p>Номер: Стандарт</p>
+                    <p>Дата заезда: 10 апреля 2025</p>
+                    <p>Дата выезда: 15 апреля 2025</p>
+                    <button class="cancel-btn">Отменить бронирование</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function toggleMenu() {
+        const menu = document.getElementById("nav-menu");
+        menu.classList.toggle("open");
+    }
+
+</script>
+</body>
+</html>

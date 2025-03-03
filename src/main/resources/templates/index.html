@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Аренда номеров в отеле</title>
+    <link rel="stylesheet" href="./css/contact.css">
+</head>
+<body>
+
+<header>
+    <div class="logo">HotBooking</div>
+    <div class="burger-menu" onclick="toggleMenu()">☰</div>
+    <nav id="nav-menu">
+        <a href="/">Главная</a>
+        <a href="/about">О нас</a>
+        <a href="/contact">Контакты</a>
+        <a href="/account">Вход</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <div class="hero-content">
+        <h1>Добро пожаловать в наш отель</h1>
+        <p>Найдите идеальное место для отдыха</p>
+    </div>
+</section>
+
+<section class="search">
+    <h2>Выберите город, отель и количество мест</h2>
+    <form id="hotelForm">
+        <div class="form-group">
+            <label for="citySelect">Город:</label>
+            <select id="citySelect">
+                <option value="">Выберите город</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="hotelSelect">Отель:</label>
+            <select id="hotelSelect" disabled>
+                <option value="">Сначала выберите город</option>
+            </select>
+        </div>
+
+        <button type="submit">Перейти к отелю</button>
+    </form>
+</section>
+
+<script>
+    // Функция для переключения меню
+    function toggleMenu() {
+        document.getElementById("nav-menu").classList.toggle("open");
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const citySelect = document.getElementById("citySelect");
+        const hotelSelect = document.getElementById("hotelSelect");
+
+        // ✅ Загружаем список городов
+        fetch("http://localhost:8080/api/cities")
+            .then(response => {
+                if (!response.ok) throw new Error("Ошибка загрузки городов");
+                return response.json();
+            })
+            .then(data => {
+                data.forEach(city => {
+                    const option = document.createElement("option");
+                    option.value = city.cityId;
+                    option.textContent = city.cityName;
+                    citySelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error("Ошибка загрузки городов:", error));
+
+        citySelect.addEventListener("change", function () {
+            const cityId = this.value;
+            hotelSelect.innerHTML = '<option value="">Выберите отель</option>';
+            hotelSelect.disabled = true;
+
+            if (cityId) {
+                fetch(`http://localhost:8080/api/hotels/city/${cityId}`)
+                    .then(response => {
+                        if (!response.ok) throw new Error("Ошибка загрузки отелей");
+                        return response.json();
+                    })
+                    .then(hotels => {
+                        if (hotels.length === 0) {
+                            hotelSelect.innerHTML = '<option value="">Нет доступных отелей</option>';
+                        } else {
+                            hotels.forEach(hotel => {
+                                const option = document.createElement("option");
+                                option.value = hotel.hotelId;
+                                option.textContent = `${hotel.hotelName} (Доступно: ${hotel.availableRooms})`;
+                                hotelSelect.appendChild(option);
+                            });
+                        }
+                        hotelSelect.disabled = false;
+                    })
+                    .catch(error => console.error("Ошибка загрузки отелей:", error));
+            }
+        });
+
+        document.getElementById("hotelForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const hotelId = hotelSelect.value;
+            if (hotelId) {
+                window.location.href = `/hotel/${hotelId}`; // ✅ Исправленный путь
+            } else {
+                alert("Выберите отель!");
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

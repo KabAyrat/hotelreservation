@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>О нас</title>
+  <link rel="stylesheet" href="./css/about.css">
+</head>
+<body>
+<header>
+  <div class="logo">HotBooking</div>
+  <div class="burger-menu" onclick="toggleMenu()">☰</div>
+  <nav id="nav-menu">
+    <a href="/">Главная</a>
+    <a href="/about">О нас</a>
+    <a href="/contact">Контакты</a>
+    <a href="/account">Вход</a>
+  </nav>
+</header>
+<section class="hero">
+  <div class="hero-content">
+    <h1>Добро пожаловать в наш отель</h1>
+    <p>Найдите идеальное место для отдыха</p>
+  </div>
+</section>
+
+
+<section class="advantages">
+  <div class="container">
+    <h2>Почему выбирают нас?</h2>
+    <div class="grid">
+      <div class="advantage">
+        <img src="/images/cheap.png" alt="Лучшие цены">
+        <h3>Лучшие цены</h3>
+        <p>Мы предлагаем конкурентные цены и выгодные предложения.</p>
+      </div>
+      <div class="advantage">
+        <img src="/images/dostos.png" alt="Широкий выбор">
+        <h3>Широкий выбор</h3>
+        <p>Тысячи отелей в разных городах доступны для бронирования.</p>
+      </div>
+      <div class="advantage">
+        <img src="/images/safe.png" alt="Безопасность">
+        <h3>Безопасность</h3>
+        <p>Гарантируем безопасные платежи и защиту данных клиентов.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="reviews">
+  <div class="container">
+    <h2>Отзывы наших клиентов</h2>
+    <div class="grid">
+      <div class="review">
+        <p>"Какой инвалид разрабатывал данный сайт?"</p>
+        <h4>- Рафит Р.</h4>
+      </div>
+      <div class="review">
+        <p>"Отличный сервис! Забронировал номер в центре Москвы без проблем. Буду пользоваться ещё!"</p>
+        <h4>- Алексей П.</h4>
+      </div>
+      <div class="review">
+        <p>"Прекрасный выбор отелей и удобный интерфейс. Всё чётко и понятно."</p>
+        <h4>- Мария С.</h4>
+      </div>
+      <div class="review">
+        <p>"Забронировал отель через HotBooking, всё прошло гладко. Рекомендую!"</p>
+        <h4>- Дмитрий В.</h4>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact-info">
+  <div class="container">
+    <h2>Наши контакты</h2>
+    <p>📍 Адрес: ул. Сибирский тракт, д. 12, Казань</p>
+    <p>📞 Телефон: +7 (917) 934-97-99</p>
+    <p>✉️ Email: kabirov.ayrat2004@gmail.com</p>
+  </div>
+</section>
+
+<script>
+  function toggleMenu() {
+    const menu = document.getElementById("nav-menu");
+    menu.classList.toggle("open");
+  }
+
+</script>
+</body>
+</html>
