@@ -19,14 +19,14 @@ public class HotelService {
         this.cityRepository = cityRepository;
     }
 
-    // ✅ Получение списка отелей по ID города
+    // 🔍 Получаем список отелей по ID города
     public List<Hotel> getHotelsByCity(Long cityId) {
         City city = cityRepository.findById(cityId)
                 .orElseThrow(() -> new RuntimeException("Город с ID " + cityId + " не найден"));
         return hotelRepository.findByCity(city);
     }
 
-    // ✅ Получение отеля по ID
+    // 🏨 Получаем отель по ID
     public Hotel getHotelById(Long hotelId) {
         return hotelRepository.findById(hotelId)
                 .orElseThrow(() -> new RuntimeException("Отель с ID " + hotelId + " не найден"));

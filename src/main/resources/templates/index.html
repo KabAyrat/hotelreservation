@@ -58,11 +58,8 @@
         const hotelSelect = document.getElementById("hotelSelect");
 
         // ✅ Загружаем список городов
-        fetch("http://localhost:8080/api/cities")
-            .then(response => {
-                if (!response.ok) throw new Error("Ошибка загрузки городов");
-                return response.json();
-            })
+        fetch('http://localhost:8080/api/cities')
+            .then(response => response.json())
             .then(data => {
                 data.forEach(city => {
                     const option = document.createElement("option");
@@ -79,22 +76,15 @@
             hotelSelect.disabled = true;
 
             if (cityId) {
-                fetch(`http://localhost:8080/api/hotels/city/${cityId}`)
-                    .then(response => {
-                        if (!response.ok) throw new Error("Ошибка загрузки отелей");
-                        return response.json();
-                    })
+                fetch(`http://localhost:8080/api/hotels/city/${cityId}`) // 🔹 Исправленный путь
+                    .then(response => response.json())
                     .then(hotels => {
-                        if (hotels.length === 0) {
-                            hotelSelect.innerHTML = '<option value="">Нет доступных отелей</option>';
-                        } else {
-                            hotels.forEach(hotel => {
-                                const option = document.createElement("option");
-                                option.value = hotel.hotelId;
-                                option.textContent = `${hotel.hotelName} (Доступно: ${hotel.availableRooms})`;
-                                hotelSelect.appendChild(option);
-                            });
-                        }
+                        hotels.forEach(hotel => {
+                            const option = document.createElement("option");
+                            option.value = hotel.hotelId;
+                            option.textContent = `${hotel.hotelName} (Доступно: ${hotel.availableRooms})`;
+                            hotelSelect.appendChild(option);
+                        });
                         hotelSelect.disabled = false;
                     })
                     .catch(error => console.error("Ошибка загрузки отелей:", error));
@@ -105,7 +95,7 @@
             e.preventDefault();
             const hotelId = hotelSelect.value;
             if (hotelId) {
-                window.location.href = `/hotel/${hotelId}`; // ✅ Исправленный путь
+                window.location.href = `/hotels/${hotelId}`; // 🔹 Правильный путь
             } else {
                 alert("Выберите отель!");
             }
